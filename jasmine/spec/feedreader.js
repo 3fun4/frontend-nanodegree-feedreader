@@ -2,6 +2,7 @@
  *
  * 这是 Jasmine 会读取的spec文件，它包含所有的要在你应用上面运行的测试。
  */
+"use strict";
 
 /* 我们把所有的测试都放在了 $() 函数里面。因为有些测试需要 DOM 元素。
  * 我们得保证在 DOM 准备好之前他们不会被运行。
@@ -21,45 +22,117 @@ $(function() {
             expect(allFeeds.length).not.toBe(0);
         });
 
-
-        /* TODO:
-         * 编写一个测试遍历 allFeeds 对象里面的所有的源来保证有链接字段而且链接不是空的。
+        /*
+         * 8.编写一个测试遍历 allFeeds 对象里面的所有的源来保证有链接字段而且链接不是空的。
          */
+        it('each feed should have a url and the url should not be null', function() {
+            for(const feed of allFeeds) {
+                expect(feed.url).toBeDefined();
+                expect(feed.url).not.toBeNull();
+                expect(feed.url).not.toBe('');
+            }
+        });
 
-
-        /* TODO:
-         * 编写一个测试遍历 allFeeds 对象里面的所有的源来保证有名字字段而且不是空的。
+        /*
+         * 9.编写一个测试遍历 allFeeds 对象里面的所有的源来保证有名字字段而且不是空的。
          */
+        it('each feed should have a name and the name should not be null', function() {
+            for(const feed of allFeeds) {
+                expect(feed.name).toBeDefined();
+                expect(feed.name).not.toBeNull();
+                expect(feed.name).not.toBe('');
+            }
+        });
     });
 
 
-    /* TODO: 写一个叫做 "The menu" 的测试用例 */
-
-        /* TODO:
-         * 写一个测试用例保证菜单元素默认是隐藏的。你需要分析 html 和 css
+    /* 10.写一个叫做 "The menu" 的测试用例 */
+    describe('The menu', function() {
+        /*
+         * 11.写一个测试用例保证菜单元素默认是隐藏的。你需要分析 html 和 css
          * 来搞清楚我们是怎么实现隐藏/展示菜单元素的。
          */
-
-         /* TODO:
-          * 写一个测试用例保证当菜单图标被点击的时候菜单会切换可见状态。这个
-          * 测试应该包含两个 expectation ： 党点击图标的时候菜单是否显示，
+        it('should be hidden by default', function() {
+            expect($('body').hasClass('menu-hidden')).toBe(true);
+        });
+         /*
+          * 12.写一个测试用例保证当菜单图标被点击的时候菜单会切换可见状态。这个
+          * 测试应该包含两个 expectation ： 当点击图标的时候菜单是否显示，
           * 再次点击的时候是否隐藏。
           */
+        describe('A spy, when clicked the menu icon', function() {
+            var menuIcon = $('.menu-icon-link');
+            beforeEach( function() {
+                spyOn(menuIcon, 'click');
+            });
 
-    /* TODO: 13. 写一个叫做 "Initial Entries" 的测试用例 */
+            it('when triggered shows the menu, when triggered again hids the menu', function() {
+                menuIcon.trigger('click');
+                expect($('body').hasClass('menu-hidden')).toEqual(false);
+                menuIcon.trigger('click');
+                expect($('body').hasClass('menu-hidden')).toEqual(true);
+            });
+        });
 
-        /* TODO:
-         * 写一个测试保证 loadFeed 函数被调用而且工作正常，即在 .feed 容器元素
+
+    });
+    /* 13. 写一个叫做 "Initial Entries" 的测试用例 */
+    describe('Initial Entries', function() {
+        /*
+         * 14.写一个测试保证 loadFeed 函数被调用而且工作正常，即在 .feed 容器元素
          * 里面至少有一个 .entry 的元素。
          *
          * 记住 loadFeed() 函数是异步的所以这个而是应该使用 Jasmine 的 beforeEach
          * 和异步的 done() 函数。
          */
+        let originalTimeout;
+        beforeEach( function(done) {
+            originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+            jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000*60*10;
+            loadFeed(0,function() {
+                done();
+            });
+        });
 
-    /* TODO: 写一个叫做 "New Feed Selection" 的测试用例 */
+        it('.feed container should have at least one .entry element', function(done) {
+            const entryNumber = ('.feed .entry').length;
+            expect(entryNumber).toBeGreaterThan(0);
+            done();
+        });
 
-        /* TODO:
-         * 写一个测试保证当用 loadFeed 函数加载一个新源的时候内容会真的改变。
+        afterEach(function() {
+          jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        });
+
+    });
+    /* 15.写一个叫做 "New Feed Selection" 的测试用例 */
+    describe('New Feed Selection', function() {
+        /*
+         * 16.写一个测试保证当用 loadFeed 函数加载一个新源的时候内容会真的改变。
          * 记住，loadFeed() 函数是异步的。
          */
+        let originalTimeout;
+        let firstFeeds, secondFeeds;
+        beforeEach( function(done) {
+            originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+            jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000*60*10;
+            loadFeed(0,function() {
+                firstFeeds = $('.feed').html();
+                    done();
+            });
+        });
+
+        it('when new feed selected the content should change', function(done) {
+            loadFeed(1, function() {
+                secondFeeds = $('.feed').html();
+                expect(firstFeeds).not.toEqual(secondFeeds);
+                done();
+            });
+        });
+
+        afterEach(function() {
+            loadFeed(0);
+            jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
+        });
+    });
 }());
