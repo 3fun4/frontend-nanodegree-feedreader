@@ -9,17 +9,17 @@ This project uses [Jasmine](https://jasmine.github.io) to test the functionality
 
 ## List of testing
 * RSS Feeds
-** are defined
-** each feed should have a url, and the url should not be null
-** each feed should have a name, and the name should not be null
+	* are defined
+	* each feed should have a url, and the url should not be null
+	* each feed should have a name, and the name should not be null
 * The menu
-** should be hidden by default
-** A spy, when clicked the menu icon
-*** when clicked shows the menu, when clicked again hides the menu
+	* should be hidden by default
+	* A spy, when clicked the menu icon
+		* when clicked shows the menu, when clicked again hides the menu
 * Initial Entries
-** .feed container should have at least 1 .entry element
+	* .feed container should have at least 1 .entry element
 * New Feed Selection
-** when new feed selected the content should change
+	* when new feed selected the content should change
 
 # 我如何完成这个项目
 
