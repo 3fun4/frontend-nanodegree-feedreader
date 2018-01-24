@@ -4,8 +4,8 @@ Feed Reader Testing
 This project uses [Jasmine](https://jasmine.github.io) to test the functionality of a feed reader.
 
 ## How to run
-* Download the zip file or clone the repository
-* Open the index.html in a web browser
+* Download the Github zip file or clone the repository.
+* Open the index.html file in a browser.
 
 ## List of testing
 * RSS Feeds
