@@ -25,7 +25,7 @@ $(function() {
         /*
          * 8.编写一个测试遍历 allFeeds 对象里面的所有的源来保证有链接字段而且链接不是空的。
          */
-        it('each feed should have a url and the url should not be null', function() {
+        it('each feed should have a url, and the url should not be null', function() {
             for(const feed of allFeeds) {
                 expect(feed.url).toBeDefined();
                 expect(feed.url).not.toBeNull();
@@ -36,7 +36,7 @@ $(function() {
         /*
          * 9.编写一个测试遍历 allFeeds 对象里面的所有的源来保证有名字字段而且不是空的。
          */
-        it('each feed should have a name and the name should not be null', function() {
+        it('each feed should have a name, and the name should not be null', function() {
             for(const feed of allFeeds) {
                 expect(feed.name).toBeDefined();
                 expect(feed.name).not.toBeNull();
@@ -66,7 +66,7 @@ $(function() {
                 spyOn(menuIcon, 'click');
             });
 
-            it('when triggered shows the menu, when triggered again hids the menu', function() {
+            it('when clicked shows the menu, when clicked again hides the menu', function() {
                 menuIcon.trigger('click');
                 expect($('body').hasClass('menu-hidden')).toEqual(false);
                 menuIcon.trigger('click');
@@ -94,7 +94,7 @@ $(function() {
             });
         });
 
-        it('.feed container should have at least one .entry element', function(done) {
+        it('.feed container should have at least 1 .entry element', function(done) {
             const entryNumber = ('.feed .entry').length;
             expect(entryNumber).toBeGreaterThan(0);
             done();
